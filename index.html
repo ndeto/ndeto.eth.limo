@@ -80,20 +80,39 @@
 
       .meta-grid {
         display: grid;
-        gap: 16px;
+        gap: 12px;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       }
 
       .pill {
         font-family: "IBM Plex Mono", "SFMono-Regular", monospace;
-        font-size: 0.85rem;
-        padding: 8px 12px;
-        border: 1px solid var(--line);
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        padding: 10px 14px 10px 34px;
+        border: 1px solid rgba(11, 61, 70, 0.25);
         border-radius: 999px;
         display: inline-flex;
         gap: 10px;
         align-items: center;
-        background: #fffdf9;
+        color: var(--accent);
+        background: linear-gradient(135deg, #fffaf0, #f2eadb);
+        box-shadow: 0 10px 18px rgba(22, 32, 28, 0.12);
+        position: relative;
+      }
+
+      .pill::before {
+        content: "";
+        width: 10px;
+        height: 10px;
+        border-radius: 3px;
+        background: var(--accent-2);
+        box-shadow: inset 0 0 0 2px #fff4dd;
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
       }
 
       .avatar {
@@ -133,6 +152,7 @@
         display: grid;
         gap: 24px;
         grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        align-items: stretch;
       }
 
       .landing-layout {
@@ -174,6 +194,26 @@
         padding: 24px;
         border-radius: 16px;
         box-shadow: 0 18px 40px rgba(22, 32, 28, 0.12);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .callout::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--accent), var(--accent-2));
+        opacity: 0.7;
+      }
+
+      #what-i-do .callout {
+        background: linear-gradient(150deg, #ffffff 0%, #fbf6ea 100%);
+      }
+
+      #what-i-do .callout:nth-child(2) {
+        background: linear-gradient(150deg, #ffffff 0%, #f3efe4 100%);
+        transform: translateY(8px);
       }
 
       .primary-entry {
@@ -262,7 +302,7 @@
           alt="ndeto avatar"
         />
         <div class="title">
-          <h1>I'm Ndeto, I'm a Research Engineer</h1>
+          <h1>I'm Martin Ndeto, I'm a Research Engineer</h1>
           <p>
             I operate at the protocol research layer, working the interoperability roadmap, trustless
             agents, and specializing in ENS.
@@ -287,16 +327,15 @@
               artifacts, specifications, and implementations at the protocol layer.
             </p>
             <div class="landing-callout">
-              <strong>Scope</strong>
-              <span>Work centers on protocol standards and their composition.</span>
+              <strong>TLDR;</strong>
+              <span>My work centers on protocol standards and how they compose to support application layers.</span>
             </div>
           </div>
           <div class="landing-stack">
             <div class="landing-panel">
               <h3>Not a CV</h3>
               <p>
-                This is not a résumé or portfolio. It is a technical record of active research and
-                engineering work. Employment history is intentionally excluded. If you want that, 
+                If you want that, 
                 see
                 <a href="https://www.linkedin.com/in/ndeto" target="_blank" rel="noopener">
                   LinkedIn
@@ -305,7 +344,7 @@
             </div>
             <div class="landing-panel">
               <h3>What to expect</h3>
-              <p>Thesis materials, implementation notes, and linked artifacts.</p>
+              <p>Thesis materials, SDKs, articles, pull requests, implementation notes, and other linked artifacts.</p>
             </div>
           </div>
         </div>
@@ -317,22 +356,22 @@
           <div class="callout">
             <h3>Research</h3>
             <ul class="list">
-              <li>Studying protocol constraints and composition limits.</li>
-              <li>Reviewing and composing standards for identity, delegation, and invocation.</li>
-              <li>Producing written technical research and thesis materials.</li>
+              <li>Mapping protocol constraints, edges, and composability limits.</li>
+              <li>Shaping standards for identity, delegation, and invocation.</li>
+              <li>Publishing thesis notes, analyses, and technical writeups.</li>
             </ul>
           </div>
           <div class="callout">
             <h3>Engineering</h3>
             <ul class="list">
-              <li>Building production-adjacent resolvers, SDKs, tooling, and demos.</li>
-              <li>Turning specifications into operational systems.</li>
-              <li>Working across onchain and offchain components.</li>
+              <li>Building resolvers, SDKs, tooling, and demos that are production-adjacent.</li>
+              <li>Turning specs into operational systems and testable workflows.</li>
+              <li>Shipping across onchain and offchain surfaces.</li>
             </ul>
           </div>
         </div>
         <p>
-          Value is created by combining research depth with implementation realism.
+          Value comes from pairing research depth with implementation realism.
         </p>
       </section>
 
