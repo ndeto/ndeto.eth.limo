@@ -1,410 +1,539 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ndeto.eth — Research Index</title>
-    <link rel="stylesheet" href="terminal.css" />
-    <style>
-      body {
-        background: var(--background);
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ndeto.eth — Research Index</title>
+  <style>
+    :root {
+      --background: #ffffff;
+      --foreground: #2b2b2b;
+      --accent: #b9975c;
+      --font-size: 1rem;
+      --line-height: 1.6em;
+      --radius: 0px;
+    }
+
+    html {
+      box-sizing: border-box;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: inherit;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        "Liberation Mono",
+        "DejaVu Sans Mono",
+        "Ubuntu Mono",
+        monospace;
+      font-size: var(--font-size);
+      font-weight: 400;
+      line-height: var(--line-height);
+      background: var(--background);
+      color: var(--foreground);
+      text-rendering: optimizeLegibility;
+      margin: 0;
+    }
+
+    h1,
+    h2,
+    h3,
+    p,
+    ul,
+    ol,
+    blockquote {
+      margin: 24px 0;
+    }
+
+    a {
+      color: var(--accent);
+    }
+
+    a:focus-visible {
+      outline: 1px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    ul,
+    ol {
+      padding-left: 2em;
+    }
+
+    li::marker {
+      color: var(--accent);
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    blockquote {
+      position: relative;
+      border-top: 1px solid var(--accent);
+      border-bottom: 1px solid var(--accent);
+      padding: 20px 20px 20px 24px;
+      margin: 24px 0;
+    }
+
+    blockquote::before {
+      content: ">";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    header {
+      display: grid;
+      gap: 18px;
+      border-bottom: 1px dashed color-mix(in srgb, var(--foreground) 40%, transparent);
+      padding-bottom: 24px;
+    }
+
+    .title h1 {
+      margin: 0;
+      font-size: clamp(1.9rem, 3vw, 2.8rem);
+      line-height: 1.15;
+    }
+
+    .title p {
+      margin: 10px 0 0;
+      max-width: 64ch;
+    }
+
+    .tagline {
+      margin: 10px 0 0;
+      max-width: 72ch;
+      font-size: 0.98rem;
+    }
+
+    .avatar {
+      width: 96px;
+      height: 96px;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+    }
+
+    .meta-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pill {
+      border: 1px solid var(--foreground);
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    section {
+      padding: 28px 0;
+      border-bottom: 1px dashed color-mix(in srgb, var(--foreground) 30%, transparent);
+    }
+
+    section:last-of-type {
+      border-bottom: none;
+    }
+
+    .grid-2 {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      align-items: start;
+    }
+
+    #research-threads .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .landing-panel,
+    .callout,
+    .primary-entry,
+    .artifact,
+    .identity a {
+      border: 1px solid var(--foreground);
+      padding: 16px;
+    }
+
+    .shadow-pop {
+      box-shadow: 8px 8px 0 color-mix(in srgb, var(--foreground) 35%, transparent);
+    }
+
+    .landing-panel p {
+      margin-top: 10px;
+    }
+
+    .landing-section+.landing-section {
+      border-top: 1px dashed color-mix(in srgb, var(--foreground) 30%, transparent);
+      margin-top: 16px;
+      padding-top: 16px;
+    }
+
+    .primary-entry {
+      border-color: var(--accent);
+    }
+
+    .primary-entry a {
+      display: inline-block;
+      margin-top: 12px;
+    }
+
+    .list {
+      padding-left: 18px;
+    }
+
+    .artifact-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .artifact {
+      display: grid;
+      gap: 8px;
+    }
+
+    .identity {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    footer {
+      padding-top: 12px;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 720px) {
+      #research-threads .grid-2 {
+        grid-template-columns: 1fr;
       }
 
       main {
-        max-width: 960px;
-        margin: 0 auto;
-        padding: 40px 24px 80px;
+        padding: 32px 18px 64px;
       }
 
-      header {
-        display: grid;
-        gap: 18px;
-        border-bottom: 1px dashed color-mix(in srgb, var(--foreground) 40%, transparent);
-        padding-bottom: 24px;
-      }
+    }
+  </style>
+</head>
 
-      .title h1 {
-        margin: 0;
-        font-size: clamp(1.9rem, 3vw, 2.8rem);
-      }
+<body>
+  <main>
+    <header>
+      <img class="avatar"
+        src="https://black-obvious-marmot-9.mypinata.cloud/ipfs/bafybeie7orzy24va22wn2fqi3mgstkryrszvp6utgfoq4ckvpdfiv7n5xq"
+        alt="ndeto avatar" />
+      <div class="title">
+        <h1>Martin Ndeto, Research Engineer</h1>
+        <p>
+          Senior level blockchain engineer and protocol researcher, building standards-backed implementations in open
+          source for interoperability, decentralized identity, and trustless agent systems.
+        </p>
+      </div>
+      <div class="meta-grid">
+        <div class="pill">Trustless Agents</div>
+        <div class="pill">Interop</div>
+        <div class="pill">ENS (Decentralized Identities)</div>
+        <div class="pill">x402 (Agent Payments)</div>
+      </div>
+    </header>
 
-      .title p {
-        margin: 10px 0 0;
-        max-width: 64ch;
-      }
-
-      .avatar {
-        width: 96px;
-        height: 96px;
-        object-fit: cover;
-        border: 2px solid var(--accent);
-      }
-
-      .meta-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-
-      .pill {
-        border: 1px solid var(--foreground);
-        padding: 4px 10px;
-        font-size: 0.78rem;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-      }
-
-      section {
-        padding: 28px 0;
-        border-bottom: 1px dashed color-mix(in srgb, var(--foreground) 30%, transparent);
-      }
-
-      section:last-of-type {
-        border-bottom: none;
-      }
-
-      .grid-2 {
-        display: grid;
-        gap: 20px;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        align-items: start;
-      }
-
-      .landing-layout {
-        display: grid;
-        gap: 20px;
-        grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-      }
-
-      .landing-panel,
-      .callout,
-      .primary-entry,
-      .artifact,
-      .identity a {
-        border: 1px solid var(--foreground);
-        padding: 16px;
-      }
-
-      .landing-panel p {
-        margin-top: 10px;
-      }
-
-      .landing-stack {
-        display: grid;
-        gap: 16px;
-      }
-
-      .landing-callout {
-        border-left: 2px solid var(--accent);
-        padding-left: 12px;
-      }
-
-      .primary-entry {
-        border-color: var(--accent);
-      }
-
-      .primary-entry a {
-        display: inline-block;
-        margin-top: 12px;
-      }
-
-      .list {
-        padding-left: 18px;
-      }
-
-      .artifact-list {
-        display: grid;
-        gap: 16px;
-      }
-
-      .artifact {
-        display: grid;
-        gap: 8px;
-      }
-
-      .identity {
-        display: grid;
-        gap: 12px;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      }
-
-      footer {
-        padding-top: 12px;
-        font-size: 0.9rem;
-      }
-
-      @media (max-width: 720px) {
-        main {
-          padding: 32px 18px 64px;
-        }
-
-        .landing-layout {
-          grid-template-columns: 1fr;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <main>
-      <header>
-        <img
-          class="avatar"
-          src="https://black-obvious-marmot-9.mypinata.cloud/ipfs/bafybeie7orzy24va22wn2fqi3mgstkryrszvp6utgfoq4ckvpdfiv7n5xq"
-          alt="ndeto avatar"
-        />
-        <div class="title">
-          <h1>I'm Martin Ndeto, I'm a Research Engineer</h1>
+    <section id="landing">
+      <h2>What this site is</h2>
+      <div class="landing-panel shadow-pop">
+        <div class="landing-section">
+          <h3>Purpose</h3>
           <p>
-            I operate at the protocol research layer, working the interoperability roadmap, trustless
-            agents, and specializing in ENS.
+            A living research index of protocol work: Thesis materials, SDKs, articles, pull requests, implementation
+            notes, and linked artifacts.
           </p>
         </div>
-        <div class="meta-grid">
-          <div class="pill">Trustless Agents</div>
-          <div class="pill">Interop</div>
-          <div class="pill">ENS (Decentralized Identities)</div>
-          <div class="pill">x402 (Agent Payments)</div>
+        <div class="landing-section">
+          <h3>Work History</h3>
+          <p>
+            See
+            <a href="https://www.linkedin.com/in/mndeto" target="_blank" rel="noopener">
+              LinkedIn
+            </a> for that.
+          </p>
         </div>
-      </header>
+      </div>
+    </section>
 
-      <section id="landing">
-        <h2>What this site is</h2>
-        <div class="landing-layout">
-          <div class="landing-panel">
-            <h3>Purpose</h3>
-            <p>
-              A living research index for the work I am doing and have been doing in
-              interoperability, ENS-based identity, and agent delegation. It documents research
-              artifacts, specifications, and implementations at the protocol layer.
-            </p>
-            <div class="landing-callout">
-              <strong>TLDR;</strong>
-              <span>My work centers on protocol standards and how they compose to support application layers.</span>
-            </div>
-          </div>
-          <div class="landing-stack">
-            <div class="landing-panel">
-              <h3>Not a CV</h3>
-              <p>
-                If you want that, 
-                see
-                <a href="https://www.linkedin.com/in/ndeto" target="_blank" rel="noopener">
-                  LinkedIn
-                </a>.
-              </p>
-            </div>
-            <div class="landing-panel">
-              <h3>What to expect</h3>
-              <p>Thesis materials, SDKs, articles, pull requests, implementation notes, and other linked artifacts.</p>
-            </div>
-          </div>
+    <section id="what-i-do">
+      <h2>What I Do</h2>
+      <div class="grid-2">
+        <div class="callout">
+          <h3>Research</h3>
+          <p>
+            I work in specifications across interoperability, identity, and agent systems, mapping constraints and
+            publishing practical theses backed by implementations.
+          </p>
         </div>
-      </section>
+        <div class="callout">
+          <h3>Engineering</h3>
+          <p>
+            I build systems that turn specs into working code, spanning onchain contracts, offchain components, SDKs,
+            and end-to-end demos.
+          </p>
+        </div>
+      </div>
+    </section>
 
-      <section id="what-i-do">
-        <h2>What I Do</h2>
-        <div class="grid-2">
-          <div class="callout">
-            <h3>Research</h3>
-            <ul class="list">
-              <li>Mapping protocol constraints, edges, and composability limits.</li>
-              <li>Shaping standards for identity, delegation, and invocation.</li>
-              <li>Publishing thesis notes, analyses, and technical writeups.</li>
-            </ul>
-          </div>
-          <div class="callout">
-            <h3>Engineering</h3>
-            <ul class="list">
-              <li>Building resolvers, SDKs, tooling, and demos that are production-adjacent.</li>
-              <li>Turning specs into operational systems and testable workflows.</li>
-              <li>Shipping across onchain and offchain surfaces.</li>
-            </ul>
-          </div>
-        </div>
-        <p>
+    <section>
+      <div class="grid shadow-pop">
+        <div class="callout">
           Value comes from pairing research depth with implementation realism.
+        </div>
+      </div>
+    </section>
+
+    <section id="current-research">
+      <h2>Current Research Focus</h2>
+      <p>This work is conducted entirely in open source, with public implementations and standards discussions serving
+        as the primary validation mechanism.</p>
+
+      <div class="primary-entry">
+        <div>
+          <h3>Agentic interoperability and decentralized identity</h3>
+          <p>
+            I design systems for the agentic web that treat trustless agents as first-class actors. I focus on composing
+            interoperability, identity, delegation, and invocation into verifiable flows that can be resolved through
+            ENS.
+          </p>
+        </div>
+        <a href="https://github.com/ndeto/AssociatedAccounts/tree/agent-delegations-demo" target="_blank"
+          rel="noopener">
+          Read the thesis entry
+        </a>
+      </div>
+    </section>
+
+    <section id="research-threads">
+      <h2>Research Threads</h2>
+      <div class="grid-2">
+        <div class="callout shadow-pop">
+          <h3>Credential Resolvers (Agents and Accounts)</h3>
+          <p>
+            Resolver-based credential discovery for autonomous agents and controlled accounts. This thread focuses on
+            how ENS resolvers can expose verifiable authorization data backed by ERC-8092 associations, without
+            introducing new registries or trust assumptions. Two concrete instantiations are Agent Delegations and
+            CCResolver.
+          </p>
+          <ul class="list">
+            <li>
+              <a href="https://github.com/ndeto/AssociatedAccounts/tree/agent-delegations-demo" target="_blank"
+                rel="noopener">
+                Agent Delegations ERC - extends ERC-8092
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/ndeto/AssociatedAccounts/tree/controlled-accounts-demo" target="_blank"
+                rel="noopener">
+                CC Resolver demo for ERC-8092
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="callout  shadow-pop">
+          <h3>Interoperable Addresses and Names</h3>
+          <p>
+            Cross-chain identity and discovery using ERC-7930 and ERC-7828 with ENS-backed chain registry resolution.
+            This work is informed by hands-on development and personal contribution to the Ethereum Chain Registry,
+            including core resolver logic and registry tooling.
+          </p>
+          <ul class="list">
+            <li>
+              <a href="https://github.com/unruggable-labs/ens-7828-resolver" target="_blank" rel="noopener">
+                Human readable chain specific addressing via ENS.
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/unruggable-labs/chain-resolver" target="_blank" rel="noopener">
+                Official Ethereum Chain Registry
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="callout  shadow-pop">
+          <h3>Execution and Mempool Tooling</h3>
+          <p>
+            A tool to visualize and compare transaction pools across different Ethereum execution clients. This helps
+            debug transaction propagation issues, analyze mempool behaviors during attacks, and understand differences
+            in transaction acceptance policies between clients.
+          </p>
+          <ul class="list">
+            <li>
+              <a href="https://github.com/punkhazardlabs/txpool-viz" target="_blank" rel="noopener">
+                txpool-viz
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="callout  shadow-pop">
+          <h3>x402 Payments and Identity</h3>
+          <p>
+            Researching and shaping the agentic web payment layer (x402): request/settle messaging, identity-aware
+            routing, and interoperable payTo schemes like ENS.
+          </p>
+          <ul class="list">
+            <li>
+              <a href="https://github.com/unruggable-labs/x402/pull/1" target="_blank" rel="noopener">
+                ENS payTo support for x402.
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/unruggable-labs/x402/pull/2" target="_blank" rel="noopener">
+                Identity metadata extension for messages.
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="artifacts">
+      <h2>Contributions</h2>
+      <div class="artifact-list">
+        <div class="artifact">
+          <strong>Agent Delegations (ERC-8092 based)</strong>
+          <span>End-to-end demo repo: resolver + hooks + CCIP-Read payload path.</span>
+          <span>
+            <a href="https://github.com/ndeto/AssociatedAccounts/tree/agent-delegations-demo" target="_blank"
+              rel="noopener">
+              AssociatedAccounts: agent-delegations-demo
+            </a>
+          </span>
+        </div>
+
+        <div class="artifact">
+          <strong>x402 ENS payTo + identity extensions</strong>
+          <span>Implemented ENS as an x402 payTo scheme and shipped optional identity metadata extensions for agent
+            payment flows.</span>
+          <span>
+            <a href="https://github.com/unruggable-labs/x402/pull/1" target="_blank" rel="noopener">
+              x402 PR: ENS payTo
+            </a>
+            <span> · </span>
+            <a href="https://github.com/unruggable-labs/x402/pull/2" target="_blank" rel="noopener">
+              x402 PR: identity extension
+            </a>
+          </span>
+        </div>
+
+        <div class="artifact">
+          <strong>Chain Registry tooling and demos</strong>
+          <span>Core development of resolver-based chain discovery, registry contracts, and developer-facing
+            tooling.</span>
+          <span>
+            <a href="https://github.com/unruggable-labs/chain-resolver" target="_blank" rel="noopener">
+              Official Ethereum Chain Registry
+            </a>
+            <span> · </span>
+            <a href="https://github.com/unruggable-labs/ens-7828-resolver" target="_blank" rel="noopener">
+              ENS 7828 Resolver
+            </a>
+            <span> · </span>
+            <a href="https://github.com/ethereum-lists/chains/graphs/contributors" target="_blank" rel="noopener">
+              Chain Registry contributors
+            </a>
+          </span>
+        </div>
+
+        <div class="artifact">
+          <strong>Standards participation</strong>
+          <span>Discussion, review, and implementation feedback across ENS and Ethereum standards.</span>
+          <span>
+            <a href="https://ethereum-magicians.org/u/ndeto" target="_blank" rel="noopener">
+              Ethereum Magicians profile
+            </a>
+            <span> · </span>
+            <a href="https://discuss.ens.domains/u/ndeto.eth/summary" target="_blank" rel="noopener">
+              ENS Discussions
+            </a>
+          </span>
+        </div>
+
+        <div class="artifact">
+          <strong>txpool-viz</strong>
+          <span>Mempool and execution lifecycle observability tooling for EVM chains.</span>
+          <span>
+            <a href="https://github.com/ndeto/txpool-visualizer" target="_blank" rel="noopener">
+              Repository
+            </a>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section id="engagement">
+      <h2>Engagement Guidance</h2>
+      <div class="callout">
+        <p>
+          I plug in as a protocol researcher and builder: research synthesis and standards work,
+          feasibility validation through implementations, and guidance on interoperability and identity
+          roadmaps. CV available on request or via LinkedIn.
         </p>
-      </section>
+      </div>
+    </section>
 
-      <section id="current-research">
-        <h2>Current Research Focus</h2>
-        <div class="primary-entry">
-          <div>
-            <h3>Agentic interoperability and decentralized identity</h3>
-            <p>
-              Focused on ENS as an identity anchor, delegation as a primitive, autonomous agents as
-              first-class actors, and resolver-based discovery and authorization.
-            </p>
-          </div>
-          <a href="https://github.com/ndeto/agent-delegations#readme" target="_blank" rel="noopener">
-            Read the thesis entry
-          </a>
-        </div>
-      </section>
+    <section id="identity">
+      <h2>Identity and Presence</h2>
+      <div class="identity">
+        <a href="https://app.ens.domains/name/ndeto.eth" target="_blank" rel="noopener">
+          ENS: ndeto.eth
+        </a>
+        <a href="https://discuss.ens.domains/u/ndeto.eth/summary" target="_blank" rel="noopener">
+          ENS Discussions
+        </a>
+        <a href="https://ethereum-magicians.org/u/ndeto" target="_blank" rel="noopener">
+          Ethereum Magicians
+        </a>
+        <a href="https://github.com/ndeto" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://x.com/0xndeto" target="_blank" rel="noopener">X / Twitter</a>
+        <a href="https://www.linkedin.com/in/mndeto" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </section>
 
-      <section id="research-threads">
-        <h2>Research Threads</h2>
-        <div class="grid-2">
-          <div class="callout">
-            <h3>Agent Delegations and Trustless Agents</h3>
-            <p>
-              Problem space: enforceable authorization for autonomous agents using delegable
-              identity primitives and resolver-mediated discovery.
-            </p>
-            <ul class="list">
-              <li>ERC-8092 based delegation.</li>
-              <li>ENS resolvers as credential surfaces.</li>
-              <li>CCIP Read for agent data.</li>
-              <li>
-                <a href="https://github.com/ndeto/agent-delegations" target="_blank" rel="noopener">
-                  AgentDelegations repo
-                </a>
-              </li>
-              <li>
-                <a href="https://github.com/ndeto/agent-delegations#thesis" target="_blank" rel="noopener">
-                  Thesis section
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div class="callout">
-            <h3>Chain Registry and Interoperability</h3>
-            <p>
-              Problem space: cross-chain discovery and registry design using resolver-based
-              composition and standards-driven identifiers.
-            </p>
-            <ul class="list">
-              <li>ERC-7930 and ERC-7828.</li>
-              <li>ENS-based chain registry patterns.</li>
-              <li>Resolver-based discovery.</li>
-              <li>
-                <a href="https://github.com/ndeto/chain-registry-notes" target="_blank" rel="noopener">
-                  Notes and repos
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div class="callout">
-            <h3>Execution and Mempool Research</h3>
-            <p>
-              Problem space: transaction lifecycle observability and execution-layer visibility for
-              protocol analysis.
-            </p>
-            <ul class="list">
-              <li>Txpool visualization.</li>
-              <li>Transaction lifecycle analysis.</li>
-              <li>Execution layer tooling.</li>
-              <li>
-                <a href="https://github.com/ndeto/txpool-visualizer" target="_blank" rel="noopener">
-                  Txpool visualization
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div class="callout">
-            <h3>x402 and Agent Payments</h3>
-            <p>
-              Problem space: standard payment request and settlement messaging for agents, with optional
-              identity metadata and resolver-based routing.
-            </p>
-            <ul class="list">
-              <li>ENS identity as a supported payTo scheme for x402.</li>
-              <li>Identity metadata extension for PaymentRequired and PaymentPayload.</li>
-              <li>Agent-to-agent payment flows aligned with decentralized identity and discovery.</li>
-              <li>
-                <a href="https://github.com/unruggable-labs/x402" target="_blank" rel="noopener">
-                  x402 repo
-                </a>
-              </li>
-              <li>
-                <a href="https://github.com/unruggable-labs/x402/pull/1" target="_blank" rel="noopener">
-                  ENS payTo integration PR
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
+    <section id="hosting">
+      <h2>Hosting and Stack</h2>
+      <p>
+        Published via
+        <a href="https://ens.domains" target="_blank" rel="noopener">ENS</a>
+        and
+        <a href="https://ipfs.tech" target="_blank" rel="noopener">IPFS</a>.
+        Served through
+        <a href="https://eth.limo" target="_blank" rel="noopener">eth.limo</a>.
+      </p>
+    </section>
 
-      <section id="artifacts">
-        <h2>Artifacts and Proofs</h2>
-        <div class="artifact-list">
-          <div class="artifact">
-            <strong>Agent Delegations SDK</strong>
-            <span>Validates: delegation as an onchain authorization primitive.</span>
-            <span>Related to: ERC-8092, ENS resolver discovery.</span>
-          </div>
-          <div class="artifact">
-            <strong>ENS Resolver Credential Demos</strong>
-            <span>Validates: resolver-based identity surfaces and CCIP Read data flows.</span>
-            <span>Related to: ENS resolver standards, CCIP Read.</span>
-          </div>
-          <div class="artifact">
-            <strong>Chain Registry Drafts</strong>
-            <span>Validates: interoperable chain discovery via resolvers.</span>
-            <span>Related to: ERC-7930, ERC-7828.</span>
-          </div>
-          <div class="artifact">
-            <strong>Txpool Visualization Tooling</strong>
-            <span>Validates: execution-layer telemetry for protocol reasoning.</span>
-            <span>Related to: execution clients and mempool APIs.</span>
-          </div>
-          <div class="artifact">
-            <strong>x402 ENS Identity and PayTo Integrations</strong>
-            <span>Validates: payments and identity composition for agent interactions.</span>
-            <span>Related to: x402, ENS resolvers, interoperable addressing and routing.</span>
-          </div>
-        </div>
-      </section>
+    <footer>
+      Martin Ndeto - Building the future
+    </footer>
+  </main>
+</body>
 
-      <section id="engagement">
-        <h2>Engagement Guidance</h2>
-        <div class="grid-2">
-          <div class="callout">
-            <h3>Researchers</h3>
-            <p>Use research threads and thesis materials as the primary entry point.</p>
-          </div>
-          <div class="callout">
-            <h3>Protocol Teams</h3>
-            <p>Review artifacts and implementations to assess feasibility and integration paths.</p>
-          </div>
-          <div class="callout">
-            <h3>Labs and Foundations</h3>
-            <p>Use the research index to track active investigations and planned specs.</p>
-          </div>
-          <div class="callout">
-            <h3>Recruiters</h3>
-            <p>
-              CV is available on request. This site prioritizes research artifacts over employment
-              history.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section id="identity">
-        <h2>Identity and Presence</h2>
-        <div class="identity">
-          <a href="https://app.ens.domains/name/ndeto.eth" target="_blank" rel="noopener">
-            ENS: ndeto.eth
-          </a>
-          <a href="https://ethereum-magicians.org/u/ndeto" target="_blank" rel="noopener">
-            Ethereum Magicians
-          </a>
-          <a href="https://github.com/ndeto" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://x.com/0xndeto" target="_blank" rel="noopener">X / Twitter</a>
-          <a href="https://www.linkedin.com/in/mndeto" target="_blank" rel="noopener">LinkedIn</a>
-        </div>
-      </section>
-
-      <section id="hosting">
-        <h2>Hosting and Stack</h2>
-        <p>Published via ENS and IPFS. Served through eth.limo.</p>
-      </section>
-
-      <footer>
-        Research index maintained as a living document. Updates reflect active protocol work.
-      </footer>
-    </main>
-  </body>
 </html>
