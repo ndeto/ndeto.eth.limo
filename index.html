@@ -1,4 +1,6 @@
 <!doctype html>
+<!-- IPFS: ipfs://QmY7P9jEU4iZNQEVSaZryRX9eTa5CXzbZ5XYEuc4547cZC -->
+<!-- Gateway: https://gateway.pinata.cloud/ipfs/QmY7P9jEU4iZNQEVSaZryRX9eTa5CXzbZ5XYEuc4547cZC -->
 <html lang="en">
 
 <head>
@@ -13,6 +15,27 @@
       --font-size: 1rem;
       --line-height: 1.6em;
       --radius: 0px;
+      color-scheme: light dark;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #0f1111;
+        --foreground: #e7e4dd;
+        --accent: #e1b76a;
+      }
+    }
+
+    html[data-theme="light"] {
+      --background: #ffffff;
+      --foreground: #2b2b2b;
+      --accent: #b9975c;
+    }
+
+    html[data-theme="dark"] {
+      --background: #0f1111;
+      --foreground: #e7e4dd;
+      --accent: #e1b76a;
     }
 
     html {
@@ -66,6 +89,24 @@
       outline-offset: 2px;
     }
 
+    button {
+      font: inherit;
+      color: var(--foreground);
+      background: transparent;
+      border: 1px solid var(--foreground);
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: color-mix(in srgb, var(--foreground) 10%, transparent);
+    }
+
+    button:focus-visible {
+      outline: 1px solid var(--accent);
+      outline-offset: 2px;
+    }
+
     ul,
     ol {
       padding-left: 2em;
@@ -101,11 +142,21 @@
       padding: 40px 24px 80px;
     }
 
+    .top-bar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 16px;
+    }
+
     header {
       display: grid;
       gap: 18px;
       border-bottom: 1px dashed color-mix(in srgb, var(--foreground) 40%, transparent);
       padding-bottom: 24px;
+    }
+
+    .theme-toggle {
+      width: fit-content;
     }
 
     .title h1 {
@@ -239,6 +290,9 @@
 
 <body>
   <main>
+    <div class="top-bar">
+      <button class="theme-toggle" type="button" data-theme-toggle>Dark mode</button>
+    </div>
     <header>
       <img class="avatar"
         src="https://black-obvious-marmot-9.mypinata.cloud/ipfs/bafybeie7orzy24va22wn2fqi3mgstkryrszvp6utgfoq4ckvpdfiv7n5xq"
@@ -457,7 +511,7 @@
               ENS 7828 Resolver
             </a>
             <span> · </span>
-            <a href="https://github.com/ethereum-lists/chains/graphs/contributors" target="_blank" rel="noopener">
+            <a href="https://github.com/unruggable-labs/chain-resolver/graphs/contributors" target="_blank" rel="noopener">
               Chain Registry contributors
             </a>
           </span>
@@ -534,6 +588,47 @@
       Martin Ndeto - Building the future
     </footer>
   </main>
+  <script>
+    (() => {
+      const storageKey = "theme";
+      const root = document.documentElement;
+      const toggle = document.querySelector("[data-theme-toggle]");
+      const media = window.matchMedia("(prefers-color-scheme: dark)");
+
+      const getStored = () => {
+        const stored = localStorage.getItem(storageKey);
+        return stored === "light" || stored === "dark" ? stored : null;
+      };
+
+      const getPreferred = () => (media.matches ? "dark" : "light");
+
+      const apply = (theme, persist) => {
+        if (persist) {
+          root.dataset.theme = theme;
+          localStorage.setItem(storageKey, theme);
+        } else {
+          delete root.dataset.theme;
+        }
+        toggle.textContent = theme === "dark" ? "☀ Light mode" : "☾ Dark mode";
+        toggle.setAttribute("aria-pressed", theme === "dark");
+      };
+
+      const stored = getStored();
+      apply(stored || getPreferred(), Boolean(stored));
+
+      toggle.addEventListener("click", () => {
+        const current = root.dataset.theme || getPreferred();
+        const next = current === "dark" ? "light" : "dark";
+        apply(next, true);
+      });
+
+      media.addEventListener("change", () => {
+        if (!getStored()) {
+          apply(getPreferred(), false);
+        }
+      });
+    })();
+  </script>
 </body>
 
 </html>
